@@ -1,0 +1,15 @@
+<div class="accommodation-card">
+	<img src="{{asset('images/accommodations/' ~ accommodation.image)}}" alt="{{accommodation.label}}" class="accommodation-image">
+	<div class="accommodation-info">
+		<h2 class="accommodation-title">{{accommodation.label}}</h2>
+		<div class="accommodation-info-container">
+			<div class="accommodation-price">
+				{% for pricing in accommodation.pricings %}
+					<p>{{ pricing.price }}</p>
+				{% endfor %}
+			</div>
+      {# <a href="{{path('app_detail', {'id': accommodation.id})}}" class="btn btn-detail">Voir détail</a> #}
+      {# <a href="{{'/detail/' ~ accommodation.id}}" class="btn btn-detail">Voir détail</a> #}
+		</div>
+	</div>
+</div>
