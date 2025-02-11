@@ -57,13 +57,13 @@ class Accommodation
      * @var Collection<int, Equipment>
      */
     #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'accommodations')]
-    private Collection $equiments;
+    private Collection $equipments;
 
     public function __construct()
     {
         $this->rentals = new ArrayCollection();
         $this->pricings = new ArrayCollection();
-        $this->equiments = new ArrayCollection();
+        $this->equipments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,23 +230,23 @@ class Accommodation
     /**
      * @return Collection<int, Equipment>
      */
-    public function getEquiments(): Collection
+    public function getEquipments(): Collection
     {
-        return $this->equiments;
+        return $this->equipments;
     }
 
-    public function addEquiment(Equipment $equiment): static
+    public function addEquipment(Equipment $equipment): static
     {
-        if (!$this->equiments->contains($equiment)) {
-            $this->equiments->add($equiment);
+        if (!$this->equipments->contains($equipment)) {
+            $this->equipments->add($equipment);
         }
 
         return $this;
     }
 
-    public function removeEquiment(Equipment $equiment): static
+    public function removeEquipment(Equipment $equipment): static
     {
-        $this->equiments->removeElement($equiment);
+        $this->equipments->removeElement($equipment);
 
         return $this;
     }

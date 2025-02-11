@@ -16,28 +16,68 @@ class AccommodationRepository extends ServiceEntityRepository
         parent::__construct($registry, Accommodation::class);
     }
 
-//    /**
-//     * @return Accommodation[] Returns an array of Accommodation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Méthode qui retourne la liste des hébergements avec leurs informations
+     */
+    public function getAccommodationWithInfo(int $id)
+    {
+        $entityManager = $this->getEntityManager();
 
-//    public function findOneBySomeField($value): ?Accommodation
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $qb = $entityManager->createQueryBuilder();
+
+        $query = $qb->select(
+            'a.id',
+            'a.label',
+            'a.location_number',
+            'a.size',
+            'a.description',
+            'a.image',
+            'a.capacity',
+            'a.availability',
+            't.label as type',
+            'p.price',
+            'e.label as equipments'
+        )
+            ->from(Accommodation::class, 'a')
+            ->join('a.type', 't')
+            ->join('a.pricings', 'p')
+            ->join('p.season', 's')
+            ->join('a.equipments', 'e')
+            ->where('a.id = :id')
+            ->andWhere(':today BETWEEN s.date_start AND s.date_end')
+            ->setParameter('id', $id)
+            ->setParameter('today', new \DateTime())
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Méthode qui retourne tout les hébergements avec leurs informations, équipements associés, et tarifs
+     */
+    public function getAccommodationsForIndex()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $qb = $entityManager->createQueryBuilder();
+
+        $query = $qb->select(
+            'a.id',
+            'a.size',
+            'a.image',
+            'a.capacity',
+            'a.availability',
+            't.label as type',
+            'p.price',
+        )
+            ->from(Accommodation::class, 'a')
+            ->join('a.type', 't')
+            ->join('a.pricings', 'p')
+            ->join('p.season', 's')
+            ->where(':today BETWEEN s.date_start AND s.date_end')
+            ->setParameter('today', new \DateTime())
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

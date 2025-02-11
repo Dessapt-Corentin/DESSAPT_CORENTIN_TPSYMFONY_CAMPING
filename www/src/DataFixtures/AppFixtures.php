@@ -206,7 +206,7 @@ class AppFixtures extends Fixture
         foreach ($array_accommodation_equipment as $accommodationEquipmentData) {
             $accommodation = $this->getReference('accommodation_' . $accommodationEquipmentData['accommodation_id']);
             $equipment = $this->getReference('equipment_' . $accommodationEquipmentData['equipment_id']);
-            $accommodation->addEquiment($equipment);
+            $accommodation->addEquipment($equipment);
             $manager->persist($accommodation);
         }
     }

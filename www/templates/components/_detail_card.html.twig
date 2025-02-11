@@ -1,0 +1,39 @@
+<div class="accommodation-detail-card">
+	<div class="accommodation-detail-image">
+		<img src="{{asset('images/accommodations/' ~ accommodation.image)}}" alt="{{accommodation.label}}">
+	</div>
+	<div class="accommodation-detail-content">
+		<h1 class="accommodation-title">{{accommodation.label}}</h1>
+		<div class="accommodation-info-detail mb-4">
+			<div class="info-item">
+				<div class="info-label">Emplacement:</div>
+				<div class="info-value">{{accommodation.location_number}}</div>
+				<div class="info-label">Superficie:</div>
+				<div class="info-value">{{accommodation.size}}m2</div>
+				<div class="info-label">Type:</div>
+				<div class="info-value">{{accommodation.type}}</div>
+				<div class="info-label">Prix/nuit:</div>
+				<div class="info-value">{{accommodation.price}}€</div>
+				<div class="info-label">Nombre de couchages:</div>
+				<div class="info-value">{{accommodation.capacity}}</div>
+				<div class="info-label">Equipements:</div>
+				<div class="info-value">
+					{% for equipment in accommodation.equipments %}
+						{{ equipment }}{% if not loop.last %}, {% endif %}
+					{% endfor %}
+				</div>
+					<h2 class="accommodation-title">Description</h2>
+					<div class="info-value">{{accommodation.description}}</div>
+				</div>
+				<div class="game-form-container">
+					<div class="action-buttons">
+						<a href="{{ path('app_home') }}" class="btn btn-back">
+							<i class="fas fa-arrow-left"></i>
+							Retour à la l'Accueil
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

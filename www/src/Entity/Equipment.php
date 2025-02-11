@@ -21,7 +21,7 @@ class Equipment
     /**
      * @var Collection<int, Accommodation>
      */
-    #[ORM\ManyToMany(targetEntity: Accommodation::class, mappedBy: 'equiments')]
+    #[ORM\ManyToMany(targetEntity: Accommodation::class, mappedBy: 'equipments')]
     private Collection $accommodations;
 
     public function __construct()
@@ -58,7 +58,7 @@ class Equipment
     {
         if (!$this->accommodations->contains($accommodation)) {
             $this->accommodations->add($accommodation);
-            $accommodation->addEquiment($this);
+            $accommodation->addEquipment($this);
         }
 
         return $this;
@@ -67,7 +67,7 @@ class Equipment
     public function removeAccommodation(Accommodation $accommodation): static
     {
         if ($this->accommodations->removeElement($accommodation)) {
-            $accommodation->removeEquiment($this);
+            $accommodation->removeEquipment($this);
         }
 
         return $this;

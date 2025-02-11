@@ -1,15 +1,15 @@
 <div class="accommodation-card">
-	<img src="{{asset('images/accommodations/' ~ accommodation.image)}}" alt="{{accommodation.label}}" class="accommodation-image">
+	<img src="{{asset('images/accommodations/' ~ accommodation.image)}}" alt="{{accommodation.type}}" class="accommodation-image">
 	<div class="accommodation-info">
-		<h2 class="accommodation-title">{{accommodation.label}}</h2>
+		<h2 class="accommodation-title">{{accommodation.type}}</h2>
+		<div>{{accommodation.capacity}} Personnes</div>
+		<div>{{accommodation.size}}m2</div>
 		<div class="accommodation-info-container">
 			<div class="accommodation-price">
-				{% for pricing in accommodation.pricings %}
-					<p>{{ pricing.price }}</p>
-				{% endfor %}
+				{# Boucle pour afficher les prix selon la saison en cours #}
+				{{accommodation.price}}€
 			</div>
-      {# <a href="{{path('app_detail', {'id': accommodation.id})}}" class="btn btn-detail">Voir détail</a> #}
-      {# <a href="{{'/detail/' ~ accommodation.id}}" class="btn btn-detail">Voir détail</a> #}
+      <a href="{{path('app_detail', {'id': accommodation.id})}}" class="btn btn-detail">Voir détail</a>
 		</div>
 	</div>
 </div>

@@ -1,5 +1,5 @@
 import './styles/app.scss';
 import './styles/navbar.scss';
+import './styles/detail.scss';
 
-import { Tooltip, Toast, Popover } from 'bootstrap';
-import './bootstrap';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
