@@ -19,20 +19,32 @@
 				<div class="info-label">Equipements:</div>
 				<div class="info-value">
 					{% for equipment in accommodation.equipments %}
-						{{ equipment }}{% if not loop.last %}, {% endif %}
+						{{ equipment }}
+						{% if not loop.last %},
+						{% endif %}
 					{% endfor %}
 				</div>
-					<h2 class="accommodation-title">Description</h2>
-					<div class="info-value">{{accommodation.description}}</div>
+				<h2 class="accommodation-title">Description</h2>
+				<div class="info-value">{{accommodation.description}}</div>
+			</div>
+			<div class="accommodation-form-container">
+				<div class="action-buttons">
+					<a href="{{ path('app_home') }}" class="btn btn-back">
+						<i class="fas fa-arrow-left"></i>
+						Retour à la l'Accueil
+					</a>
 				</div>
-				<div class="accommodation-form-container">
-					<div class="action-buttons">
-						<a href="{{ path('app_home') }}" class="btn btn-back">
-							<i class="fas fa-arrow-left"></i>
-							Retour à la l'Accueil
-						</a>
-					</div>
-				</div>
+				<li>
+					{% if app.user %}
+						<button>
+							<a href="{{ path('app_rental_new', {id: accommodation.id}) }}" class="protected-link">Louer</a>
+						</button>
+					{% else %}
+						<button>
+							<a href="{{ path('app_login') }}" class="protected-link">Louer</a>
+						</button>
+					{% endif %}
+				</li>
 			</div>
 		</div>
 	</div>

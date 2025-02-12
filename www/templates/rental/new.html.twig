@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle réservation
+{% endblock %}
+
+{% block body %}
+	<div class="acommodation-form-container">
+		<h1>Réserver</h1>
+		{{ include('rental/_form.html.twig') }}
+		<div class="action-buttons">
+			<a href="{{ path('app_home') }}" class="btn btn-back">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la liste
+			</a>
+		</div>
+	</div>
+{% endblock %}
