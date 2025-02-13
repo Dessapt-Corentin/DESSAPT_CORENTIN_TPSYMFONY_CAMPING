@@ -32,6 +32,9 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Réserver</button>
 		{{ form_end(form) }}
+			<div class="form-group">
+				{{ form_errors(form) }}
+			</div>
 			<div class="action-buttons">
 				<a href="{{ path('app_home') }}" class="btn btn-back">
 					<i class="fas fa-arrow-left"></i>

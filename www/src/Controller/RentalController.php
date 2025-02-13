@@ -143,6 +143,14 @@ final class RentalController extends AbstractController
         // Récupérer les infos de l'hébergement
         $accommodation = $rental->getAccommodation();
 
+        if ($request->isMethod('POST')) {
+            if ($request->request->get('action') === 'cancel') {
+                $entityManager->remove($rental);
+                $entityManager->flush();
+            }
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('rental/confirm.html.twig', [
             'rental' => $rental,
             'accommodation' => $accommodation,
