@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Accommodation;
 use App\Form\AccommodationType;
 use App\Repository\AccommodationRepository;
+use App\Repository\SeasonRepository;
+use App\Entity\Pricing;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,19 +26,29 @@ final class AccommodationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_accommodation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SeasonRepository $seasonRepository): Response
     {
         $accommodation = new Accommodation();
+
+        // Récupérer toutes les saisons existantes
+        $seasons = $seasonRepository->findAll();
+
+        foreach ($seasons as $season) {
+            $pricing = new Pricing();
+            $pricing->setSeason($season);
+            $accommodation->addPricing($pricing);
+        }
+
         $form = $this->createForm(AccommodationType::class, $accommodation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . '_' . uniqid() . '.' . $imageFile->guessExtension();
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $originalname = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalname . '_' . uniqid() . '.' . $image->guessExtension();
                 try {
-                    $imageFile->move(
+                    $image->move(
                         $this->getParameter('images_directory'),
                         $newFilename
                     );

@@ -50,7 +50,7 @@ class Accommodation
     /**
      * @var Collection<int, Pricing>
      */
-    #[ORM\OneToMany(targetEntity: Pricing::class, mappedBy: 'accommodation')]
+    #[ORM\OneToMany(targetEntity: Pricing::class, mappedBy: 'accommodation',  cascade: ['persist'])]
     private Collection $pricings;
 
     /**

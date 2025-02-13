@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Pricing;
+use App\Form\PricingType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AccommodationType extends AbstractType
 {
@@ -48,6 +51,11 @@ class AccommodationType extends AbstractType
                 'class' => TypeAccommodation::class,
                 'choice_label' => 'label',
                 'label' => 'Type d\'hébergement:',
+            ])
+            ->add('pricings', CollectionType::class, [
+                'entry_type' => PricingType::class,
+                'entry_options' => ['label' => false], // Supprime les labels des champs enfants
+                'label' => false, // Supprime le label global
             ])
             ->add('equipments', EntityType::class, [
                 'class' => Equipment::class,
