@@ -13,10 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
 
-#[Route('/rental')]
 final class RentalController extends AbstractController
 {
-    #[Route(name: 'app_rental_index', methods: ['GET'])]
+    #[Route('admin/rental', name: 'app_rental_index', methods: ['GET'])]
     public function index(RentalRepository $rentalRepository): Response
     {
         return $this->render('rental/index.html.twig', [
@@ -24,7 +23,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_rental_new', methods: ['GET', 'POST'])]
+    #[Route('/rental/new', name: 'app_rental_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -94,7 +93,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_rental_show', methods: ['GET'])]
+    #[Route('/rental/{id}', name: 'app_rental_show', methods: ['GET'])]
     public function show(Rental $rental): Response
     {
         return $this->render('rental/show.html.twig', [
@@ -102,7 +101,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_rental_edit', methods: ['GET', 'POST'])]
+    #[Route('/rental/{id}/edit', name: 'app_rental_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Rental $rental, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RentalType::class, $rental);
@@ -120,7 +119,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_rental_delete', methods: ['POST'])]
+    #[Route('/rental/{id}', name: 'app_rental_delete', methods: ['POST'])]
     public function delete(Request $request, Rental $rental, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $rental->getId(), $request->getPayload()->getString('_token'))) {
@@ -132,7 +131,7 @@ final class RentalController extends AbstractController
     }
 
     // Méthode pour confirmer une réservation avec son récapitulatif et possibilité d'annulation avant insertion en base
-    #[Route('/confirm/{id}', name: 'app_rental_confirm', methods: ['GET', 'POST'])]
+    #[Route('/rental/confirm/{id}', name: 'app_rental_confirm', methods: ['GET', 'POST'])]
     public function confirm(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager, int $id): Response
     {
         $rental = $rentalRepository->find($id);

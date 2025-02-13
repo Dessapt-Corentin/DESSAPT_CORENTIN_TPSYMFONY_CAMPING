@@ -5,7 +5,7 @@
 
 {% block body %}
 	<div class="accommodation-list-container">
-
+		{% include "components/_dashboard_button.html.twig" %}
 		<h1>Liste des réservations</h1>
 
 		<table class="accommodation-table">
@@ -15,6 +15,7 @@
 					<th>Nom + Accommodation Id:</th>
 					<th>Emplacement:</th>
 					<th>Client:</th>
+					<th>Tel:</th>
 					<th>Date de début:</th>
 					<th>Date de fin:</th>
 					<th>Nombre adulte:</th>
@@ -32,6 +33,7 @@
 						<td>{{ rental.accommodation.locationNumber }}</td>
 						<td>{{ rental.user.firstname }}
 							{{rental.user.lastname}}</td>
+						<td>{{ rental.user.phoneNumber }}</td>
 						<td>{{ rental.dateStart ? rental.dateStart|date('Y-m-d H:i:s') : '' }}</td>
 						<td>{{ rental.dateEnd ? rental.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
 						<td>{{ rental.adultNumber }}</td>
