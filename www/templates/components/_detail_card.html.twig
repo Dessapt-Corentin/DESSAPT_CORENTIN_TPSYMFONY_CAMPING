@@ -1,11 +1,14 @@
+<div class="accommodation-form-container">
+	<h1 style="color: #ffd700;" class="accommodation-title">{{accommodation.label}}</h1>
+</div>
 <div class="accommodation-detail-card">
 	<div class="accommodation-detail-image">
 		<img src="{{asset('images/accommodations/' ~ accommodation.image)}}" alt="{{accommodation.label}}">
 	</div>
 	<div class="accommodation-detail-content">
-		<h1 class="accommodation-title">{{accommodation.label}}</h1>
 		<div class="accommodation-info-detail mb-4">
 			<div class="info-item">
+				<h2 class="accommodation-title">Informations</h2>
 				<div class="info-label">Emplacement:</div>
 				<div class="info-value">{{accommodation.location_number}}</div>
 				<div class="info-label">Superficie:</div>
@@ -30,22 +33,20 @@
 			{% if not disableButtons %}
 				<div class="accommodation-form-container">
 					<div class="action-buttons">
-						<a href="{{ path('app_home') }}" class="btn btn-back">
+						<a href="{{ path('app_home') }}" class="btn btn-back" style="background-color: #1a1f36; color:white;">
 							<i class="fas fa-arrow-left"></i>
 							Retour à la l'Accueil
 						</a>
 					</div>
-					<li>
-						{% if app.user %}
-							<button>
-								<a href="{{ path('app_rental_new', {id: accommodation.id}) }}" class="protected-link">Louer</a>
-							</button>
-						{% else %}
-							<button>
-								<a href="{{ path('app_login') }}" class="protected-link">Louer</a>
-							</button>
-						{% endif %}
-					</li>
+					{% if app.user %}
+						<div class="action-buttons">
+							<a href="{{ path('app_rental_new', {id: accommodation.id}) }}" class="btn btn-back" style="background-color: #006400;">Louer</a>
+						</div>
+					{% else %}
+						<div class="action-buttons">
+							<a href="{{ path('app_login') }}" class="btn btn-back" style="background-color: #006400;">Louer</a>
+						</div>
+					{% endif %}
 				</div>
 			{% endif %}
 		</div>

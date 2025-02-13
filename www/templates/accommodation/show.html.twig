@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accommodation{% endblock %}
+
+{% block body %}
+    <div class="accommodation-list-container">
+        <h1>Accommodation n°{{accommodation.id}}</h1>
+        <table class="accommodation-table">
+            <thead>
+                <tr>
+                    <th>Id:</th>
+                    <th>Label:</th>
+                    <th>Emplacement:</th>
+                    <th>Superficie:</th>
+                    <th>Description:</th>
+                    <th>Capacité:</th>
+                    <th>Image</th>
+                    <th>Disponibilité:</th>
+                    <th>Actions:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ accommodation.id }}</td>
+                    <td>{{ accommodation.label }}</td>
+                    <td>{{ accommodation.locationNumber }}</td>
+                    <td>{{ accommodation.size }}</td>
+                    <td>{{ accommodation.description }}</td>
+                    <td>{{ accommodation.capacity }}</td>
+                    <td>{{ accommodation.image }}</td>
+                    <td>{{ accommodation.availability ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{{ path('app_accommodation_edit', {'id': accommodation.id}) }}" class="btn btn-edit">Editer</a>
+                            <a href="{{ path('app_accommodation_index') }}" class="btn btn-back">
+                                <i class="fas fa-arrow-left"></i> Retour à la liste
+                            </a>
+                            {% include "accommodation/_delete_form.html.twig" with {'button_class': 'btn btn-delete'}%}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

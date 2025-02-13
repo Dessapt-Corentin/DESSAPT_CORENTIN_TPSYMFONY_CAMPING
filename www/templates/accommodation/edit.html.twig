@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification d'un hébergement{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .accommodation-form {
+            margin-top: 60px; /* Adjust this value as needed to place it under the navbar */
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="accommodation-form">
+        <h1 class="form-title text-center">Modifier l'hébergement n°{{ accommodation.id }}</h1>
+        <div class="form-group">
+            {{ include('accommodation/_form.html.twig', {'button_label': 'Modifier'}) }}
+        </div>
+        <div class="action-buttons">
+            <a href="{{ path('app_accommodation_index') }}" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i>
+                Retour à la liste
+            </a>
+            {% include "accommodation/_delete_form.html.twig" %}
+        </div>
+    </div>
+{% endblock %}

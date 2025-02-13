@@ -1,45 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle réservation
-{% endblock %}
+{% block title %}Nouvelle réservation{% endblock %}
 
 {% block body %}
 	{# Afficher le bien avec le _detail_card.html.twig dans components #}
 	{{ include('components/_detail_card.html.twig', {rental: rental, disableButtons: true}) }}
-	<div class="acommodation-form-container">
+	<div class="accommodation-form">
 
-		<h1>Réserver</h1>
+		<h1 style="text-align: center;">Réserver</h1>
+
 		{{ form_start(form) }}
 		<div class="form-group">
 			{{ form_label(form.adult_number) }}
-			{{ form_widget(form.adult_number) }}
+			{{ form_widget(form.adult_number, {'attr': {'class': 'form-control'}}) }}
 			{{ form_errors(form.adult_number) }}
 		</div>
 		<div class="form-group">
 			{{ form_label(form.child_number) }}
-			{{ form_widget(form.child_number) }}
+			{{ form_widget(form.child_number, {'attr': {'class': 'form-control'}}) }}
 			{{ form_errors(form.child_number) }}
 		</div>
 		<div class="form-group">
 			{{ form_label(form.date_start) }}
-			{{ form_widget(form.date_start) }}
+			{{ form_widget(form.date_start, {'attr': {'class': 'form-control'}}) }}
 			{{ form_errors(form.date_start) }}
 		</div>
 		<div class="form-group">
 			{{ form_label(form.date_end) }}
-			{{ form_widget(form.date_end) }}
+			{{ form_widget(form.date_end, {'attr': {'class': 'form-control'}}) }}
 			{{ form_errors(form.date_end) }}
 		</div>
-		<button type="submit" class="btn btn-primary">Réserver</button>
+		<button type="submit" class="btn-submit">
+			<i class="fas fa-save"></i>
+			Réserver
+		</button>
 		{{ form_end(form) }}
-			<div class="form-group">
-				{{ form_errors(form) }}
-			</div>
-			<div class="action-buttons">
-				<a href="{{ path('app_home') }}" class="btn btn-back">
-					<i class="fas fa-arrow-left"></i>
-					Retour à la liste
-				</a>
-			</div>
+		<div class="form-group">
+			{{ form_errors(form) }}
 		</div>
-	{% endblock %}
+		<div class="action-buttons">
+			<a href="{{ path('app_home') }}" class="btn btn-back">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la liste
+			</a>
+		</div>
+	</div>
+{% endblock %}
