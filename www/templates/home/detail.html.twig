@@ -3,6 +3,6 @@
 {% block body %}
 
 {# on recupère le template de detail card #}
-{% include "components/_detail_card.html.twig" %}
+{% include "components/_detail_card.html.twig" with { disableButtons: false } %}
 
 {% endblock %}

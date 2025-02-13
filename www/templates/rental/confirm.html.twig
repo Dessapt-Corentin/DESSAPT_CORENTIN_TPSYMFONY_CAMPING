@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de la réservation{% endblock %}
+
+{% block body %}
+    <h1>Confirmation de la réservation</h1>
+    <p>Merci de vérifier les détails de votre réservation avant de confirmer.</p>
+
+    <ul>
+        <li>Hébergement : {{ rental.accommodation.label }}</li>
+        <li>Localisation : {{ rental.accommodation.locationNumber }}</li>
+        <li>Capacité : {{ rental.accommodation.capacity }}</li>
+        <li>Prix/nuit : {{ rental.accommodation.pricings.first.price }} €</li>
+        <li>Prix total : 
+            {{ (rental.dateEnd|date('U') - rental.dateStart|date('U')) / 86400 * rental.accommodation.pricings.first.price }} €</li>
+        <li>Type : {{ rental.accommodation.type.label }}</li>
+        <li>Nombre d'adultes : {{ rental.adultNumber }}</li>
+        <li>Nombre d'enfants : {{ rental.childNumber }}</li>
+        <li>Date de début : {{ rental.dateStart|date('d/m/Y') }}</li>
+        <li>Date de fin : {{ rental.dateEnd|date('d/m/Y') }}</li>
+    </ul>
+
+    <form method="post" action="{{ path('app_rental_confirm', {id: rental.id}) }}">
+        <button type="submit" class="btn btn-primary">Confirmer la réservation</button>
+    </form>
+
+    <a href="{{ path('app_rental_new', {'id': rental.accommodation.id}) }}" class="btn btn-secondary">Modifier</a>
+{% endblock %}

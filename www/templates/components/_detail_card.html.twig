@@ -27,25 +27,27 @@
 				<h2 class="accommodation-title">Description</h2>
 				<div class="info-value">{{accommodation.description}}</div>
 			</div>
-			<div class="accommodation-form-container">
-				<div class="action-buttons">
-					<a href="{{ path('app_home') }}" class="btn btn-back">
-						<i class="fas fa-arrow-left"></i>
-						Retour à la l'Accueil
-					</a>
+			{% if not disableButtons %}
+				<div class="accommodation-form-container">
+					<div class="action-buttons">
+						<a href="{{ path('app_home') }}" class="btn btn-back">
+							<i class="fas fa-arrow-left"></i>
+							Retour à la l'Accueil
+						</a>
+					</div>
+					<li>
+						{% if app.user %}
+							<button>
+								<a href="{{ path('app_rental_new', {id: accommodation.id}) }}" class="protected-link">Louer</a>
+							</button>
+						{% else %}
+							<button>
+								<a href="{{ path('app_login') }}" class="protected-link">Louer</a>
+							</button>
+						{% endif %}
+					</li>
 				</div>
-				<li>
-					{% if app.user %}
-						<button>
-							<a href="{{ path('app_rental_new', {id: accommodation.id}) }}" class="protected-link">Louer</a>
-						</button>
-					{% else %}
-						<button>
-							<a href="{{ path('app_login') }}" class="protected-link">Louer</a>
-						</button>
-					{% endif %}
-				</li>
-			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>

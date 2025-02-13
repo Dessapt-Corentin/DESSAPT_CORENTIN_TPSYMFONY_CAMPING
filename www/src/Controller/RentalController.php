@@ -69,16 +69,28 @@ final class RentalController extends AbstractController
             } else {
                 $entityManager->persist($rental);
                 $entityManager->flush();
-
-                $this->addFlash('success', 'Rental created successfully!');
-
-                return $this->redirectToRoute('app_rental_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_rental_confirm', ['id' => $rental->getId()], Response::HTTP_SEE_OTHER);
             }
         }
+
+        //Transformer l'objet accommodation en un tableau associatif pour l'afficher dans le formulaire
+        $arrayAccommodation = [
+            'id' => $accommodation->getId(),
+            'label' => $accommodation->getLabel(),
+            'location_number' => $accommodation->getLocationNumber(),
+            'type' => $accommodation->getType()->getLabel(),
+            'size' => $accommodation->getSize(),
+            'price' => $accommodation->getPricings()->first()->getPrice(),
+            'description' => $accommodation->getDescription(),
+            'equipments' => array_map(fn($equipment) => $equipment->getLabel(), $accommodation->getEquipments()->toArray()),
+            'capacity' => $accommodation->getCapacity(),
+            'image' => $accommodation->getImage(),
+        ];
 
         return $this->render('rental/new.html.twig', [
             'rental' => $rental,
             'form' => $form,
+            'accommodation' => $arrayAccommodation,
         ]);
     }
 
@@ -117,5 +129,23 @@ final class RentalController extends AbstractController
         }
 
         return $this->redirectToRoute('app_rental_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // Méthode pour confirmer une réservation avec son récapitulatif et possibilité d'annulation avant insertion en base
+    #[Route('/confirm/{id}', name: 'app_rental_confirm', methods: ['GET', 'POST'])]
+    public function confirm(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $rental = $rentalRepository->find($id);
+        if (!$rental) {
+            throw $this->createNotFoundException('Rental not found.');
+        }
+
+        // Récupérer les infos de l'hébergement
+        $accommodation = $rental->getAccommodation();
+
+        return $this->render('rental/confirm.html.twig', [
+            'rental' => $rental,
+            'accommodation' => $accommodation,
+        ]);
     }
 }
