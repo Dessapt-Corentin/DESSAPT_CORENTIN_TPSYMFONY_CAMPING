@@ -45,10 +45,25 @@ final class AccommodationController extends AbstractController
     #[Route('/{id}', name: 'app_accommodation_show', methods: ['GET'])]
     public function show(Accommodation $accommodation): Response
     {
+        $arrayAccommodation = [
+            'id' => $accommodation->getId(),
+            'label' => $accommodation->getLabel(),
+            'location_number' => $accommodation->getLocationNumber(),
+            'type' => $accommodation->getType()->getLabel(),
+            'size' => $accommodation->getSize(),
+            'price' => $accommodation->getPricings()->first()->getPrice(),
+            'description' => $accommodation->getDescription(),
+            'equipments' => array_map(fn($equipment) => $equipment->getLabel(), $accommodation->getEquipments()->toArray()),
+            'capacity' => $accommodation->getCapacity(),
+            'image' => $accommodation->getImage(),
+            'availability' => $accommodation->isAvailability(),
+        ];
+
         return $this->render('accommodation/show.html.twig', [
-            'accommodation' => $accommodation,
+            'accommodation' => $arrayAccommodation,
         ]);
     }
+
 
     #[Route('/{id}/edit', name: 'app_accommodation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Accommodation $accommodation, EntityManagerInterface $entityManager): Response
@@ -71,7 +86,7 @@ final class AccommodationController extends AbstractController
     #[Route('/{id}', name: 'app_accommodation_delete', methods: ['POST'])]
     public function delete(Request $request, Accommodation $accommodation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$accommodation->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $accommodation->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($accommodation);
             $entityManager->flush();
         }

@@ -23,12 +23,12 @@
                 <tr>
                     <td>{{ accommodation.id }}</td>
                     <td>{{ accommodation.label }}</td>
-                    <td>{{ accommodation.locationNumber }}</td>
+                    <td>{{ accommodation.location_number }}</td>
                     <td>{{ accommodation.size }}</td>
                     <td>{{ accommodation.description }}</td>
                     <td>{{ accommodation.capacity }}</td>
                     <td>{{ accommodation.image }}</td>
-                    <td>{{ accommodation.availability ? 'Yes' : 'No' }}</td>
+                    <td>{{ accommodation.availability ? 'Oui' : 'Non' }}</td>
                     <td>
                         <div class="action-buttons">
                             <a href="{{ path('app_accommodation_edit', {'id': accommodation.id}) }}" class="btn btn-edit">Editer</a>
@@ -42,4 +42,6 @@
             </tbody>
         </table>
     </div>
+    {# Je veux afficher ici le détail de l'accommodation choisie vie le components/_accommodation_card.html.twig #}
+    {{ include('components/_detail_card.html.twig', {accommodation: accommodation, disableButtons: true}) }}
 {% endblock %}

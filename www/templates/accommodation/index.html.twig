@@ -18,6 +18,8 @@
                     <th>Capacité:</th>
                     <th>Image:</th>
                     <th>Disponibilité:</th>
+                    <th>Type:</th>
+                    <th>Equipements:</th>
                     <th>Actions:</th>
                 </tr>
             </thead>
@@ -32,6 +34,12 @@
                     <td>{{ accommodation.capacity }}</td>
                     <td>{{ accommodation.image }}</td>
                     <td>{{ accommodation.availability ? 'Oui' : 'Non' }}</td>
+                    <td>{{ accommodation.type.label }}</td>
+                    <td>
+                        {% for equipment in accommodation.equipments %}
+                            {{ loop.index <= 2 ? equipment.label : '' }}{% if loop.index == 2 and accommodation.equipments|length > 2 %}...{% endif %}{% if loop.index <= 2 and not loop.last and loop.index < 2 %}, {% endif %}
+                        {% endfor %}
+                    </td>
                     <td>
                         <div class="accommodation-actions">
                             <a href="{{ path('app_accommodation_show', {'id': accommodation.id}) }}" class="view-link">Voir</a>
