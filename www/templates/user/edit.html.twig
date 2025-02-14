@@ -6,7 +6,17 @@
     <div class="accommodation-form">
         <h1 class="form-title text-center">Modifier l'utilisateur</h1>
         <div class="form-group">
-            {{ include('user/_form.html.twig', {'button_label': 'Modifier'}) }}
+            {{ form_start(form) }}
+            {% for field in form %}
+                {% if field.vars.name != 'plainPassword' %}
+                    {{ form_row(field) }}
+                {% endif %}
+            {% endfor %}
+            <button class="btn-submit" type="submit">
+                <i class="fas fa-save"></i>
+                {{ button_label|default('Enregistrer') }}
+            </button>
+            {{ form_end(form, {'render_rest': false}) }}
         </div>
         <div class="action-buttons">
             <a href="{{ path('app_user_index') }}" class="btn btn-back">
