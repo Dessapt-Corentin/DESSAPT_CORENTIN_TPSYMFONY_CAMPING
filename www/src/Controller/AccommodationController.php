@@ -115,9 +115,21 @@ final class AccommodationController extends AbstractController
     #[Route('/{id}', name: 'app_accommodation_delete', methods: ['POST'])]
     public function delete(Request $request, Accommodation $accommodation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $accommodation->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $accommodation->getId(), $request->get('_token'))) {
+            if (!$accommodation->getRentals()->isEmpty()) {
+                $accommodation->setAvailability(false);
+                $entityManager->flush();
+                $this->addFlash('error', 'Impossible de supprimer un hébergement ayant des locations. L\'annonce à était désactivé.');
+                return $this->redirectToRoute('app_accommodation_edit', ['id' => $accommodation->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            foreach ($accommodation->getPricings() as $pricing) {
+                $entityManager->remove($pricing);
+            }
             $entityManager->remove($accommodation);
             $entityManager->flush();
+        } else {
+            $this->addFlash('error', 'Invalid CSRF token.');
         }
 
         return $this->redirectToRoute('app_accommodation_index', [], Response::HTTP_SEE_OTHER);
