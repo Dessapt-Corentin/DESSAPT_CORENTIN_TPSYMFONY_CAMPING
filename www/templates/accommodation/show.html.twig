@@ -14,6 +14,7 @@
                     <th>Superficie:</th>
                     <th>Description:</th>
                     <th>Capacité:</th>
+                    <th>Prix par saison:</th>
                     <th>Image</th>
                     <th>Disponibilité:</th>
                     <th>Actions:</th>
@@ -27,6 +28,11 @@
                     <td>{{ accommodation.size }}</td>
                     <td>{{ accommodation.description }}</td>
                     <td>{{ accommodation.capacity }}</td>
+                    <td>
+                        {% for pricing in accommodation.pricings %}
+                            {{ pricing.season.label }}: <span style="color: #ffd700;">{{ pricing.price }} €</span><br>
+                        {% endfor %}
+                    </td>
                     <td>{{ accommodation.image }}</td>
                     <td>{{ accommodation.availability ? 'Oui' : 'Non' }}</td>
                     <td>

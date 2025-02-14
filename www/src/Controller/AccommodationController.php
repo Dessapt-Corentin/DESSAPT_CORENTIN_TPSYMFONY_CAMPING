@@ -85,6 +85,7 @@ final class AccommodationController extends AbstractController
             'capacity' => $accommodation->getCapacity(),
             'image' => $accommodation->getImage(),
             'availability' => $accommodation->isAvailability(),
+            'pricings' => $accommodation->getPricings()->toArray(),
         ];
 
         return $this->render('accommodation/show.html.twig', [
