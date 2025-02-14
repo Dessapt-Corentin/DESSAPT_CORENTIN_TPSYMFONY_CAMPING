@@ -30,6 +30,18 @@
 			{{ form_widget(form.date_end, {'attr': {'class': 'form-control'}}) }}
 			{{ form_errors(form.date_end) }}
 		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="form-group" style="display: none;">
+				{{ form_label(form.accommodation) }}
+				{{ form_widget(form.accommodation, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.accommodation) }}
+			</div>
+		{% endif %}
+			<div class="form-group">
+				{{ form_label(form.user) }}
+				{{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.user) }}
+			</div>
 		<button type="submit" class="btn-submit">
 			<i class="fas fa-save"></i>
 			Réserver

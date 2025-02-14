@@ -2,16 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Accommodation;
 use App\Entity\Rental;
 use App\Form\RentalType;
+use App\Entity\Accommodation;
 use App\Repository\RentalRepository;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Form\FormError;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class RentalController extends AbstractController
 {
@@ -90,6 +90,56 @@ final class RentalController extends AbstractController
             'rental' => $rental,
             'form' => $form,
             'accommodation' => $arrayAccommodation,
+        ]);
+    }
+
+    #[Route('/admin/rental/new', name: 'app_admin_rental_new', methods: ['GET', 'POST'])]
+    public function newAdmin(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager): Response
+    {
+        $rental = new Rental();
+        $form = $this->createForm(RentalType::class, $rental);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // L'utilisateur et l'hébergement sont déjà définis par le formulaire
+            $user = $rental->getUser();
+            $accommodation = $rental->getAccommodation();
+
+            if (!$user || !$accommodation) {
+                throw $this->createNotFoundException('User or Accommodation not found.');
+            }
+
+            // Vérifier la capacité
+            $totalGuests = $rental->getAdultNumber() + $rental->getChildNumber();
+            if ($totalGuests > $accommodation->getCapacity()) {
+                $form->addError(new FormError('La capacité de l\'hébergement est insuffisante pour le nombre de personnes indiqué.'));
+            } else {
+                // Vérifier les réservations existantes
+                $existingReservations = $rentalRepository->createQueryBuilder('r')
+                    ->where('r.accommodation = :accommodation')
+                    ->andWhere('r.date_start < :date_end')
+                    ->andWhere('r.date_end > :date_start')
+                    ->setParameter('accommodation', $accommodation)
+                    ->setParameter('date_start', $rental->getDateStart())
+                    ->setParameter('date_end', $rental->getDateEnd())
+                    ->getQuery()
+                    ->getResult();
+
+                if (count($existingReservations) > 0) {
+                    $form->addError(new FormError('Cette période est déjà réservée. Veuillez choisir une autre date.'));
+                } else {
+                    $entityManager->persist($rental);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('app_rental_confirm', ['id' => $rental->getId()], Response::HTTP_SEE_OTHER);
+                }
+            }
+        }
+
+        // dd($form); // Remove or comment out this line to prevent halting the script
+
+        return $this->render('/rental/new_admin.html.twig', [
+            'rental' => $rental,
+            'form' => $form,
         ]);
     }
 
