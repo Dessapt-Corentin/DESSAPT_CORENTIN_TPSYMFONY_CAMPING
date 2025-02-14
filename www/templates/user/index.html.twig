@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+<div class="accommodation-list-container">
+{% include "components/_dashboard_button.html.twig" %}
+<h1>Liste des utilisateurs</h1>
+
+	<table class="accommodation-table">
+		<thead>
+			<tr>
+				<th>Id:</th>
+				<th>Email:</th>
+				<th>Rôles:</th>
+				<th>Mot de passe:</th>
+				<th>Prénom:</th>
+				<th>Nom:</th>
+				<th>Numéro de téléphone:</th>
+				<th>Adresse:</th>
+				<th>Actions:</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.id }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    <td>********</td> <!-- Masquer le mot de passe -->
+                    <td>{{ user.firstname }}</td>
+					<td>{{ user.lastname }}</td>
+					<td>{{ user.phoneNumber }}</td>
+					<td>{{ user.address }}</td>
+					<td>
+						<div class="accommodation-actions">
+							<a href="{{ path('app_user_show', {'id': user.id}) }}" class="view-link">Voir</a>
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="edit-link">Editer</a>
+						</div>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="9">Aucun enregistrement trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div style="text-align: center;">
+		<a href="{{ path('app_user_new') }}" class="add-accommodation-btn">Créer un nouvel utilisateur</a>
+	</div>
+</div>
+{% endblock %}

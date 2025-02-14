@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvel Hébergement{% endblock %}
+{% block title %}Nouvel utilisateur{% endblock %}
 
 {% block body %}
-    <div class="accommodation-form-container">
-        <h1>Ajouter un hébergement</h1>
+	<div class="accommodation-form-container">
+        <h1>Créer un nouvel utilisateur</h1>
     </div>
     <div class="accommodation-form">
         <div class="form-group">
-        {{ include('accommodation/_form.html.twig', {'button_label': 'Ajouter'}) }}
+        {{ include('user/_form.html.twig') }}
         </div>
         <div class="action-buttons">
-            <a href="{{ path('app_home') }}" class="btn btn-back">
+            <a href="{{ path('app_user_index') }}" class="btn btn-back">
                 <i class="fas fa-arrow-left"></i>
                 Retour à la liste
             </a>
