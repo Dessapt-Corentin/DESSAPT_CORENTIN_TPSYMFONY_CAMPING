@@ -3,7 +3,7 @@
 </div>
 <div class="accommodation-detail-card">
 	<div class="accommodation-detail-image">
-		<img src="{{asset('images/accommodations/' ~ accommodation.image)}}" alt="{{accommodation.label}}">
+		<img src="{{ asset('/uploads/images/' ~ accommodation.image) }}" alt="{{ accommodation.label }}">
 	</div>
 	<div class="accommodation-detail-content">
 		<div class="accommodation-info-detail mb-4">

@@ -18,21 +18,22 @@ class HomeController extends AbstractController
     public function index(AccommodationRepository $accommodationRepository): Response
     {
         $title = 'Camping de la Plage';
-    
+
         // Récupérer les données de l'accommodation
         $accommodationsData = $accommodationRepository->getAccommodationsForIndex();
-    
+
         // Supprimer les doublons d'accommodations
         $accommodations = [];
         $uniqueIds = [];
-        
+
         foreach ($accommodationsData as $accommodation) {
             if (!in_array($accommodation['id'], $uniqueIds)) {
                 $uniqueIds[] = $accommodation['id'];
                 $accommodations[] = $accommodation;
             }
         }
-    
+        // dd($accommodations);
+
         return $this->render('home/index.html.twig', [
             'title' => $title,
             'accommodations' => $accommodations
