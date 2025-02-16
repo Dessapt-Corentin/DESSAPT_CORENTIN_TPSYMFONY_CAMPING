@@ -38,8 +38,11 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email :',
                 'attr' => ['class' => 'form-control'],
-            ])
-            ->add('plainPassword', PasswordType::class, [
+            ]);
+
+        // Ajout du champ plainPassword uniquement si on est en création
+        if ($options['is_edit'] === false) {
+            $builder->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe :',
                 'mapped' => false,
                 'attr' => ['class' => 'form-control'],
@@ -54,14 +57,15 @@ class UserType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_edit' => false, // Par défaut, on est en création
         ]);
     }
 }
