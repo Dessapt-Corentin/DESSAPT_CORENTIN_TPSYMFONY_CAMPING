@@ -19,6 +19,19 @@
 				<li class="nav-item">
 					<a class="nav-link active" href="{{path('app_home')}}">Accueil</a>
 				</li>
+				<li class="nav-item dropdown">
+					<a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Par type</a>
+					<ul
+						class="dropdown-menu">
+						{# on recupere ici notre fonction twig pour recuperer les types #}
+						{% for nav in menu_items() %}
+							<li>
+								<a href="{{ path('app_type', {'id': nav.id}) }}" class="dropdown-item">{{nav.label}}
+									({{nav.total}})</a>
+							</li>
+						{% endfor %}
+					</li>
+				</li>
 			</ul>
 		</div>
 		{# espace administrateur #}

@@ -83,4 +83,32 @@ class HomeController extends AbstractController
             'accommodation' => $accommodation
         ]);
     }
+
+    /**
+     * Méthode qui retourne la liste des accommodations par type
+     * @Route("/type/{id}", name="app_console")
+     * @param AccommodationRepository $accommodationRepository
+     * @param int $id
+     * @return Response
+     */
+    #[Route('/type/{id}', name: 'app_type')]
+    public function accommodationsByType(AccommodationRepository $accommodationRepository, int $id): Response
+    {
+        // On récupère les accommodations filtrées par type
+        $accommodations = $accommodationRepository->getAccommodationsByType($id);
+
+        // On définit le titre avec le nom du type
+        $title = 'Les ' .
+            $accommodationRepository->getTypeLabelById($id) . 's' . ':';
+
+        // Récupérer les prix pour chaque accommodation
+        foreach ($accommodations as &$accommodation) {
+            $accommodation['prices'] = $accommodationRepository->getPricesForAccommodation($accommodation['id']);
+        }
+
+        return $this->render('home/index.html.twig', [
+            'accommodations' => $accommodations,
+            'title' => $title
+        ]);
+    }
 }
