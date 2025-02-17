@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/accommodation')]
+#[Route('/admin')]
 final class AccommodationController extends AbstractController
 {
-    #[Route(name: 'app_accommodation_index', methods: ['GET'])]
+    #[Route('/accommodation', name: 'app_accommodation_index', methods: ['GET'])]
     public function index(AccommodationRepository $accommodationRepository): Response
     {
         return $this->render('accommodation/index.html.twig', [
@@ -25,7 +25,7 @@ final class AccommodationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_accommodation_new', methods: ['GET', 'POST'])]
+    #[Route('/accommodation/new', name: 'app_accommodation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SeasonRepository $seasonRepository): Response
     {
         $accommodation = new Accommodation();
@@ -70,7 +70,7 @@ final class AccommodationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_accommodation_show', methods: ['GET'])]
+    #[Route('/accommodation/{id}', name: 'app_accommodation_show', methods: ['GET'])]
     public function show(Accommodation $accommodation): Response
     {
         $arrayAccommodation = [
@@ -94,7 +94,7 @@ final class AccommodationController extends AbstractController
     }
 
 
-    #[Route('/{id}/edit', name: 'app_accommodation_edit', methods: ['GET', 'POST'])]
+    #[Route('/accommodation/{id}/edit', name: 'app_accommodation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Accommodation $accommodation, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AccommodationType::class, $accommodation);
@@ -112,7 +112,7 @@ final class AccommodationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_accommodation_delete', methods: ['POST'])]
+    #[Route('/accommodation/{id}', name: 'app_accommodation_delete', methods: ['POST'])]
     public function delete(Request $request, Accommodation $accommodation, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $accommodation->getId(), $request->get('_token'))) {
