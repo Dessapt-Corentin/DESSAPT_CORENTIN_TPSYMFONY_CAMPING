@@ -278,8 +278,8 @@ class AppFixtures extends Fixture
 
             [
                 'label' => 'Fermeture annuelle',
-                'date_start' => '01-10-2025',
-                'date_end' => '31-03-2026',
+                'date_start' => '01-10-2024',
+                'date_end' => '31-03-2025',
             ]
 
         ];
