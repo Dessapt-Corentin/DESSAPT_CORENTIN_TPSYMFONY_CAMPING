@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation
+{% endblock %}
+
+{% block body %}
+	<div class="accommodation-list-container">
+		<h1>Liste des mes réservations</h1>
+
+		<table class="accommodation-table">
+			<thead>
+				<tr>
+					<th>Numéro de la réservation:</th>
+					<th>Nom:</th>
+					<th>Emplacement:</th>
+					<th>Date de début:</th>
+					<th>Date de fin:</th>
+					<th>Nombre adulte:</th>
+					<th>Nombre enfant:</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for rental in rentals %}
+					<tr>
+						<td>{{ rental.id }}</td>
+						<td>{{ rental.accommodation.label }}</td>
+						<td>{{ rental.accommodation.locationNumber }}</td>
+						<td>{{ rental.dateStart ? rental.dateStart|date('Y-m-d H:i:s') : '' }}</td>
+						<td>{{ rental.dateEnd ? rental.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+						<td>{{ rental.adultNumber }}</td>
+						<td>{{ rental.childNumber }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

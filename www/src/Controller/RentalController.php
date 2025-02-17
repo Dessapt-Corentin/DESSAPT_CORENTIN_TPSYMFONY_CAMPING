@@ -266,4 +266,20 @@ final class RentalController extends AbstractController
             'totalPrice' => $totalPrice,
         ]);
     }
+
+    // Méthode pour afficher les réservations d'un utilisateur
+    #[Route('/rental/user', name: 'app_rental_user', methods: ['GET'])]
+    public function userRental(RentalRepository $rentalRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in to view your rentals.');
+        }
+
+        $rentals = $rentalRepository->findRentalsByUser($user);
+
+        return $this->render('rental/user.html.twig', [
+            'rentals' => $rentals,
+        ]);
+    }
 }
