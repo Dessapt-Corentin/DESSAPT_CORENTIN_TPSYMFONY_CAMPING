@@ -80,4 +80,25 @@ class AccommodationRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * Méthode qui retourne les prix pour un hébergement donné
+     */
+    public function getPricesForAccommodation(int $id)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $qb = $entityManager->createQueryBuilder();
+
+        $query = $qb->select(
+            'p.price'
+        )
+            ->from('App\Entity\Pricing', 'p')
+            ->join('p.season', 's')
+            ->where('p.accommodation = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

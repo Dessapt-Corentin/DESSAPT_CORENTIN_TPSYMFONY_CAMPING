@@ -32,7 +32,11 @@ class HomeController extends AbstractController
                 $accommodations[] = $accommodation;
             }
         }
-        // dd($accommodations);
+
+        // Récupérer les prix pour chaque accommodation
+        foreach ($accommodations as &$accommodation) {
+            $accommodation['prices'] = $accommodationRepository->getPricesForAccommodation($accommodation['id']);
+        }
 
         return $this->render('home/index.html.twig', [
             'title' => $title,
@@ -70,6 +74,9 @@ class HomeController extends AbstractController
 
         // Ajouter les équipements regroupés
         $accommodation['equipments'] = $equipments;
+
+        // Récupérer les prix pour l'accommodation
+        $accommodation['prices'] = $accommodationRepository->getPricesForAccommodation($accommodation['id']);
 
         return $this->render('home/detail.html.twig', [
             'title' => $title,

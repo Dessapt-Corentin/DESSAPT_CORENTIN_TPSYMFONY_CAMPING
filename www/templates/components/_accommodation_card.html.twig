@@ -6,11 +6,9 @@
 			Personnes</div>
 		<div>{{accommodation.size}}m2</div>
 		<div class="accommodation-info-container">
-			<div
-				class="accommodation-price">
-				{# Boucle pour afficher les prix selon la saison en cours #}
+			<div class="accommodation-price">
 				A partir de
-				{{accommodation.price}}€
+				{{ accommodation.prices[0].price }}€
 			</div>
 			<a href="{{path('app_detail', {'id': accommodation.id})}}" class="btn btn-detail">Voir détail</a>
 		</div>
