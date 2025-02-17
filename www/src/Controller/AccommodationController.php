@@ -93,7 +93,6 @@ final class AccommodationController extends AbstractController
         ]);
     }
 
-
     #[Route('/accommodation/{id}/edit', name: 'app_accommodation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Accommodation $accommodation, EntityManagerInterface $entityManager): Response
     {

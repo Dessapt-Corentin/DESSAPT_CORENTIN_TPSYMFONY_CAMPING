@@ -52,6 +52,12 @@ final class RentalController extends AbstractController
             $form->addError(new FormError('La capacité de l\'hébergement est insuffisante pour le nombre de personnes indiqué.'));
         }
 
+        // Vérifier si les dates sont dans le passé
+        $currentDate = new \DateTime();
+        if ($rental->getDateStart() < $currentDate || $rental->getDateEnd() < $currentDate) {
+            $form->addError(new FormError('Vous ne pouvez pas réserver pour une date passée.'));
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $existingReservations = $rentalRepository->createQueryBuilder('r')
                 ->where('r.accommodation = :accommodation')
