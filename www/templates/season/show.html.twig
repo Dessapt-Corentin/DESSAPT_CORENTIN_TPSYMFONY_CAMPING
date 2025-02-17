@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Saisons
+{% endblock %}
+
+{% block body %}
+	<div class="accommodation-list-container">
+		<h1>Saisons</h1>
+		<table class="accommodation-table">
+			<thead>
+				<tr>
+					<th>Id:</th>
+					<th>Label:</th>
+					<th>Date Start:</th>
+					<th>Date End:</th>
+					<th>Actions:</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ season.id }}</td>
+					<td>{{ season.label }}</td>
+					<td>{{ season.dateStart ? season.dateStart|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ season.dateEnd ? season.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<div class="action-buttons">
+							<div>
+								{% include "season/_delete_form.html.twig" with {'button_class': 'btn btn-delete'} %}
+							</div>
+							<div>
+								<a href="{{ path('app_season_edit', {'id': season.id}) }}" class="btn btn-edit">Editer</a>
+							</div>
+							<div>
+								<a href="{{ path('app_season_index') }}" class="btn btn-back">
+									<i class="fas fa-arrow-left"></i>Retour à la liste
+								</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
