@@ -143,7 +143,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/rental/{id}', name: 'app_rental_show', methods: ['GET'])]
+    #[Route('/admin/rental/{id}', name: 'app_rental_show', methods: ['GET'])]
     public function show(Rental $rental): Response
     {
         return $this->render('rental/show.html.twig', [
@@ -151,7 +151,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/rental/{id}/edit', name: 'app_rental_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/rental/{id}/edit', name: 'app_rental_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Rental $rental, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RentalType::class, $rental);
@@ -169,7 +169,7 @@ final class RentalController extends AbstractController
         ]);
     }
 
-    #[Route('/rental/{id}', name: 'app_rental_delete', methods: ['POST'])]
+    #[Route('/admin/rental/{id}', name: 'app_rental_delete', methods: ['POST'])]
     public function delete(Request $request, Rental $rental, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $rental->getId(), $request->getPayload()->getString('_token'))) {
