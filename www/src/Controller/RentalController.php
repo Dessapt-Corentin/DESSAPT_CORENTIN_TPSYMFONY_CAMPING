@@ -58,6 +58,15 @@ final class RentalController extends AbstractController
             $form->addError(new FormError('Vous ne pouvez pas réserver pour une date passée.'));
         }
 
+        // Vérifier si les dates sont dans la période bloquée
+        $blockedStartDate = new \DateTime('2025-10-01 00:00:00');
+        $blockedEndDate = new \DateTime('2026-03-31 00:00:00');
+        if (($rental->getDateStart() >= $blockedStartDate && $rental->getDateStart() <= $blockedEndDate) ||
+            ($rental->getDateEnd() >= $blockedStartDate && $rental->getDateEnd() <= $blockedEndDate)
+        ) {
+            $form->addError(new FormError('Vous ne pouvez pas réserver pendant la période de fermeture.'));
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $existingReservations = $rentalRepository->createQueryBuilder('r')
                 ->where('r.accommodation = :accommodation')
