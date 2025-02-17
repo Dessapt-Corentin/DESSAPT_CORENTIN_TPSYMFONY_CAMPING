@@ -3,7 +3,7 @@
 
 {# on peut redefinir le titre de l'onglet #}
 {% block title %}
-{{title|default('Nos hébergements')}}
+	{{title|default('Nos hébergements')}}
 {% endblock %}
 {% block body %}
 	<div class="container mt-5">
@@ -11,9 +11,9 @@
 			<h1 class="text-center mb-5 display-4">{{title|default('Nos hébergements')}}</h1>
 		</header>
 		<div class="accommodation-grid">
-		{% for accommodation in accommodations %}
-			{% include "components/_accommodation_card.html.twig" with {'accommodation': accommodation} %}
-		{% endfor %}
+			{% for accommodation in accommodations %}
+				{% include "components/_accommodation_card.html.twig" with {'accommodation': accommodation} %}
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}

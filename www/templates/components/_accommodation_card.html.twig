@@ -2,14 +2,17 @@
 	<img src="{{asset('uploads/images/' ~ accommodation.image)}}" alt="{{accommodation.type}}" class="accommodation-image">
 	<div class="accommodation-info">
 		<h2 class="accommodation-title">{{accommodation.type}}</h2>
-		<div>{{accommodation.capacity}} Personnes</div>
+		<div>{{accommodation.capacity}}
+			Personnes</div>
 		<div>{{accommodation.size}}m2</div>
 		<div class="accommodation-info-container">
-			<div class="accommodation-price">
+			<div
+				class="accommodation-price">
 				{# Boucle pour afficher les prix selon la saison en cours #}
+				A partir de
 				{{accommodation.price}}€
 			</div>
-      <a href="{{path('app_detail', {'id': accommodation.id})}}" class="btn btn-detail">Voir détail</a>
+			<a href="{{path('app_detail', {'id': accommodation.id})}}" class="btn btn-detail">Voir détail</a>
 		</div>
 	</div>
 </div>
