@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeAccommodation
+{% endblock %}
+
+{% block body %}
+	<div class="accommodation-list-container">
+		<h1>TypeAccommodation</h1>
+		<table class="accommodation-table">
+			<thead>
+				<tr>
+					<th>Id:</th>
+					<th>Label:</th>
+					<th>Actions:</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ type_accommodation.id }}</td>
+					<td>{{ type_accommodation.label }}</td>
+					<td>
+						<div class="action-buttons">
+							<div>
+								{{ include('type_accommodation/_delete_form.html.twig', {'button_class': 'btn btn-delete'}) }}
+							</div>
+							<div>
+								<a href="{{ path('app_type_accommodation_edit', {'id': type_accommodation.id}) }}" class="btn btn-edit">Editer</a>
+							</div>
+							<div>
+								<a href="{{ path('app_type_accommodation_index') }}" class="btn btn-back">
+									<i class="fas fa-arrow-left"></i>Retour à la liste
+								</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
