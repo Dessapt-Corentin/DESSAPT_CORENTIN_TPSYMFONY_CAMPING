@@ -71,7 +71,7 @@ final class AccommodationController extends AbstractController
     }
 
     #[Route('/accommodation/{id}', name: 'app_accommodation_show', methods: ['GET'])]
-    public function show(Accommodation $accommodation): Response
+    public function show(Accommodation $accommodation, AccommodationRepository $accommodationRepository): Response
     {
         $arrayAccommodation = [
             'id' => $accommodation->getId(),
@@ -79,7 +79,7 @@ final class AccommodationController extends AbstractController
             'location_number' => $accommodation->getLocationNumber(),
             'type' => $accommodation->getType()->getLabel(),
             'size' => $accommodation->getSize(),
-            'price' => $accommodation->getPricings()->first()->getPrice(),
+            'prices' => $accommodationRepository->getPricesForAccommodation($accommodation->getId()),
             'description' => $accommodation->getDescription(),
             'equipments' => array_map(fn($equipment) => $equipment->getLabel(), $accommodation->getEquipments()->toArray()),
             'capacity' => $accommodation->getCapacity(),

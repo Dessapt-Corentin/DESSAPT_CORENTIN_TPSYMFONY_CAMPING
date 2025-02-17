@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Rental;
 use App\Form\RentalType;
 use App\Entity\Accommodation;
+use App\Repository\AccommodationRepository;
 use App\Repository\PricingRepository;
 use App\Repository\RentalRepository;
 use App\Repository\SeasonRepository;
@@ -24,9 +25,8 @@ final class RentalController extends AbstractController
             'rentals' => $rentalRepository->findAll(),
         ]);
     }
-
     #[Route('/rental/new', name: 'app_rental_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager, AccommodationRepository $accommodationRepository): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -96,7 +96,7 @@ final class RentalController extends AbstractController
             'location_number' => $accommodation->getLocationNumber(),
             'type' => $accommodation->getType()->getLabel(),
             'size' => $accommodation->getSize(),
-            'price' => $accommodation->getPricings()->first()->getPrice(),
+            'prices' => $accommodationRepository->getPricesForAccommodation($accommodation->getId()),
             'description' => $accommodation->getDescription(),
             'equipments' => array_map(fn($equipment) => $equipment->getLabel(), $accommodation->getEquipments()->toArray()),
             'capacity' => $accommodation->getCapacity(),
