@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification utilisateur
+{% endblock %}
+
+{% block body %}
+	<div class="accommodation-form">
+		<h1 class="form-title text-center">Modifier l'utilisateur</h1>
+		<div class="form-group">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="btn-submit" type="submit">
+				<i class="fas fa-save"></i>
+				{{ button_label|default('Enregistrer') }}
+			</button>
+			{{ form_end(form, {'render_rest': false}) }}
+		</div>
+		<div class="action-buttons">
+			<a href="{{ path('app_home') }}" class="btn btn-back">
+				<i class="fas fa-arrow-left"></i>
+				Retour à la l'accueil
+			</a>
+		</div>
+	</div>
+{% endblock %}

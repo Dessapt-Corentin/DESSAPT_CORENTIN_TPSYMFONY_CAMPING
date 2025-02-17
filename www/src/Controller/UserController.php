@@ -54,7 +54,6 @@ final class UserController extends AbstractController
         ]);
     }
 
-
     #[Route('/admin/user/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -89,5 +88,28 @@ final class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/user/profile', name: 'app_user_profile', methods: ['GET', 'POST'])]
+    public function profile(Request $request, Security $security, EntityManagerInterface $entityManager): Response
+    {
+        $user = $security->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
+        $form = $this->createForm(UserType::class, $user, ['is_edit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
     }
 }

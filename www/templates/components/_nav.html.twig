@@ -26,17 +26,18 @@
 			<a href="#" class="nav-link dropdown-toggle text-dark fs-5" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLink">
 				<i class="fa-regular fa-circle-user icon-user"></i>
 			</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            {% if app.user %}
-                {% if is_granted('ROLE_ADMIN') %}
-					<a class="dropdown-item" href="{{path('app_admin_dashboard')}}">Dashboard</a>
-                {% endif %}
-				<a class="dropdown-item" href="{{path('app_logout')}}">Déconnexion</a>
-            {% else %}
-				<a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>
-				<a class="dropdown-item" href="{{path('app_register')}}">Inscription</a>
-            {% endif %}
-            </div>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				{% if app.user %}
+					<a class="dropdown-item" href="{{path('app_user_profile')}}">Profil</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a class="dropdown-item" href="{{path('app_admin_dashboard')}}">Dashboard</a>
+					{% endif %}
+					<a class="dropdown-item" href="{{path('app_logout')}}">Déconnexion</a>
+				{% else %}
+					<a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>
+					<a class="dropdown-item" href="{{path('app_register')}}">Inscription</a>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 </nav>
