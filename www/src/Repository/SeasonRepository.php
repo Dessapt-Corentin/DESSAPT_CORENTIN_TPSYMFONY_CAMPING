@@ -16,28 +16,28 @@ class SeasonRepository extends ServiceEntityRepository
         parent::__construct($registry, Season::class);
     }
 
-//    /**
-//     * @return Season[] Returns an array of Season objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findSeasonsBetweenDates(\DateTime $dateStart, \DateTime $dateEnd): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.date_start <= :dateEnd')
+            ->andWhere('s.date_end >= :dateStart')
+            ->setParameter('dateStart', $dateStart)
+            ->setParameter('dateEnd', $dateEnd)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Season
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findSeasonsActiveOnCurrentDate(): ?Season
+    {
+        $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));  // Date actuelle en UTC
+        $currentDate->setTime(0, 0, 0);  // Supprime l'heure, pour ne comparer que les dates
+
+        // On recherche la saison qui est active à la date actuelle
+        return $this->createQueryBuilder('s')
+            ->where('s.date_start <= :currentDate') // La date de début de la saison doit être avant la date actuelle
+            ->andWhere('s.date_end >= :currentDate') // La date de fin de la saison doit être après la date actuelle
+            ->setParameter('currentDate', $currentDate)
+            ->getQuery()
+            ->getOneOrNullResult(); // Retourne la saison correspondante ou null si aucune saison n'est trouvée
+    }
 }

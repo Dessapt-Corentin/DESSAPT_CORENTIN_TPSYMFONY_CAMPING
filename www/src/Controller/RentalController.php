@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Rental;
 use App\Form\RentalType;
 use App\Entity\Accommodation;
+use App\Repository\PricingRepository;
 use App\Repository\RentalRepository;
+use App\Repository\SeasonRepository;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -194,10 +196,9 @@ final class RentalController extends AbstractController
 
         return $this->redirectToRoute('app_rental_index', [], Response::HTTP_SEE_OTHER);
     }
-
     // Méthode pour confirmer une réservation avec son récapitulatif et possibilité d'annulation avant insertion en base
     #[Route('/rental/confirm/{id}', name: 'app_rental_confirm', methods: ['GET', 'POST'])]
-    public function confirm(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager, int $id): Response
+    public function confirm(Request $request, RentalRepository $rentalRepository, EntityManagerInterface $entityManager, SeasonRepository $seasonRepository, PricingRepository $pricingRepository, int $id): Response
     {
         $rental = $rentalRepository->find($id);
         if (!$rental) {
@@ -206,6 +207,49 @@ final class RentalController extends AbstractController
 
         // Récupérer les infos de l'hébergement
         $accommodation = $rental->getAccommodation();
+
+        // Récupérer la saison active
+        $saisonActuelle = $seasonRepository->findSeasonsActiveOnCurrentDate();
+
+        if (!$saisonActuelle) {
+            // Si aucune saison active n'est trouvée, définir une saison par défaut
+            $saisonActuelle = $seasonRepository->findOneBy(['label' => 'Haute saison']);
+        }
+
+        // Trouver le tarif pour le logement et la saison actuelle
+        $tarif = $pricingRepository->findTarif($accommodation, $saisonActuelle);
+        $pricePerNight = $tarif ? $tarif->getPrice() : 0;
+
+        // Initialisation des variables
+        $daysCount = 0;
+        $totalPrice = 0;
+
+        // Calcul automatique du nombre de jours avant soumission
+        $dateStart = $rental->getDateStart();
+        $dateEnd = $rental->getDateEnd();
+
+        if ($dateStart && $dateEnd && $dateEnd > $dateStart) {
+            $interval = $dateStart->diff($dateEnd);
+            $daysCount = $interval->days;
+
+            // Récupérer la saison correspondant aux dates de réservation
+            $seasons = $seasonRepository->findSeasonsBetweenDates($dateStart, $dateEnd);
+            if (!$seasons) {
+                throw $this->createNotFoundException('No seasons found for the given dates.');
+            }
+
+            // Calculer le prix total en fonction des saisons
+            foreach ($seasons as $season) {
+                $seasonStart = $season->getDateStart();
+                $seasonEnd = $season->getDateEnd();
+                $seasonDays = min($dateEnd, $seasonEnd)->diff(max($dateStart, $seasonStart))->days + 1;
+
+                $tarif = $pricingRepository->findTarif($accommodation, $season);
+                $pricePerNight = $tarif ? $tarif->getPrice() : 0;
+
+                $totalPrice += $seasonDays * $pricePerNight;
+            }
+        }
 
         if ($request->isMethod('POST')) {
             if ($request->request->get('action') === 'cancel') {
@@ -218,6 +262,8 @@ final class RentalController extends AbstractController
         return $this->render('rental/confirm.html.twig', [
             'rental' => $rental,
             'accommodation' => $accommodation,
+            'daysCount' => $daysCount,
+            'totalPrice' => $totalPrice,
         ]);
     }
 }
