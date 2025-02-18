@@ -181,33 +181,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Rental>
-     */
-    public function getRentals(): Collection
-    {
-        return $this->rentals;
-    }
+    // /**
+    //  * @return Collection<int, Rental>
+    //  */
+    // public function getRentals(): Collection
+    // {
+    //     return $this->rentals;
+    // }
 
-    public function addRental(Rental $rental): static
-    {
-        if (!$this->rentals->contains($rental)) {
-            $this->rentals->add($rental);
-            $rental->setUserId($this);
-        }
+    // public function addRental(Rental $rental): static
+    // {
+    //     if (!$this->rentals->contains($rental)) {
+    //         $this->rentals->add($rental);
+    //         $rental->setUserId($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeRental(Rental $rental): static
-    {
-        if ($this->rentals->removeElement($rental)) {
-            // set the owning side to null (unless already changed)
-            if ($rental->getUserId() === $this) {
-                $rental->setUserId(null);
-            }
-        }
+    // public function removeRental(Rental $rental): static
+    // {
+    //     if ($this->rentals->removeElement($rental)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($rental->getUserId() === $this) {
+    //             $rental->setUserId(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

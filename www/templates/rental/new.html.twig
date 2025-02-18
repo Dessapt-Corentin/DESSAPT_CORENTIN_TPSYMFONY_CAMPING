@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle réservation{% endblock %}
+{% block title %}Nouvelle réservation
+{% endblock %}
 
 {% block body %}
 	{# Afficher le bien avec le _detail_card.html.twig dans components #}
@@ -30,18 +31,20 @@
 			{{ form_widget(form.date_end, {'attr': {'class': 'form-control'}}) }}
 			{{ form_errors(form.date_end) }}
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if is_granted('ROLE_USER') %}
 			<div class="form-group" style="display: none;">
 				{{ form_label(form.accommodation) }}
 				{{ form_widget(form.accommodation, {'attr': {'class': 'form-control'}}) }}
 				{{ form_errors(form.accommodation) }}
 			</div>
 		{% endif %}
-			<div class="form-group">
+		{% if is_granted('ROLE_USER') %}
+			<div class="form-group" style="display: {% if is_granted('ROLE_ADMIN') %}block{% else %}none{% endif %};">
 				{{ form_label(form.user) }}
 				{{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
 				{{ form_errors(form.user) }}
 			</div>
+		{% endif %}
 		<button type="submit" class="btn-submit">
 			<i class="fas fa-save"></i>
 			Réserver
