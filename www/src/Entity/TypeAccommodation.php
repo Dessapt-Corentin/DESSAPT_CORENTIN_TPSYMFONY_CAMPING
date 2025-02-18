@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeAccommodationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TypeAccommodationRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TypeAccommodationRepository::class)]
 class TypeAccommodation
@@ -14,6 +15,7 @@ class TypeAccommodation
     private ?int $id = null;
 
     #[ORM\Column(length: 75)]
+    #[Groups(['rental:read'])]
     private ?string $label = null;
 
     public function getId(): ?int

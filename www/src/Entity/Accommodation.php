@@ -7,23 +7,32 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ['rental:read']],
+    denormalizationContext: ['groups' => ['rental:write']]
+)]
 #[ORM\Entity(repositoryClass: AccommodationRepository::class)]
 class Accommodation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['rental:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
     private ?string $label = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['rental:read'])]
     private ?string $location_number = null;
 
     #[ORM\ManyToOne(targetEntity: TypeAccommodation::class)]
     #[ORM\JoinColumn(name: "type_id", referencedColumnName: "id")]
+    #[Groups(['rental:read'])]
     private ?TypeAccommodation $type = null;
 
     #[ORM\Column]
@@ -39,6 +48,7 @@ class Accommodation
     private ?string $image = null;
 
     #[ORM\Column]
+    #[Groups(['rental:read', 'rental:write'])]
     private ?bool $availability = null;
 
     /**

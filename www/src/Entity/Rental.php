@@ -2,36 +2,49 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RentalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RentalRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['rental:read']],
+    denormalizationContext: ['groups' => ['rental:write']]
+)]
 class Rental
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['rental:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'rentals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['rental:read'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'rentals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['rental:read'])]
     private ?Accommodation $accommodation = null;
 
     #[ORM\Column]
+    #[Groups(['rental:read'])]
     private ?int $adult_number = null;
 
     #[ORM\Column]
+    #[Groups(['rental:read'])]
     private ?int $child_number = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['rental:read'])]
     private ?\DateTimeInterface $date_start = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['rental:read'])]
     private ?\DateTimeInterface $date_end = null;
 
     public function getId(): ?int
