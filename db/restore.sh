@@ -1,4 +1,4 @@
 #!/usr/bin/sh
 
-mariadb symfony -uroot -psuperAdmin < /root/init.sql
+mariadb symfony_camping_dc -uroot -padmin < /root/init.sql
 echo "Restauration terminée"
